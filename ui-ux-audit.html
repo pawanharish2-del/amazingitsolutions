@@ -125,7 +125,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- External Global Stylesheet -->
-    <link rel="stylesheet" href="style.css?v=20260827_01">
+    <link rel="stylesheet" href="style.css?v=20260827_02">
 
 </head>
 
@@ -593,22 +593,33 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <!-- Interactive JavaScript -->
     <script>
-        // 1. Scroll Progress Bar & Sticky Header
+        // 1. Scroll Progress Bar & Sticky Header (Optimized 60fps)
         const header = document.getElementById('header');
         const scrollProgress = document.getElementById('scrollProgress');
+        let isScrolling = false;
 
         window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
+            if (!isScrolling) {
+                window.requestAnimationFrame(() => {
+                    const scrollY = window.scrollY;
+                    if (scrollY > 30) {
+                        header && header.classList.add('scrolled');
+                    } else {
+                        header && header.classList.remove('scrolled');
+                    }
 
-            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrollPercentage = (scrollTop / scrollHeight) * 100;
-            scrollProgress.style.width = scrollPercentage + '%';
-        });
+                    if (scrollProgress) {
+                        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                        const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                        if (scrollHeight > 0) {
+                            scrollProgress.style.width = ((scrollTop / scrollHeight) * 100) + '%';
+                        }
+                    }
+                    isScrolling = false;
+                });
+                isScrolling = true;
+            }
+        }, { passive: true });
 
         // 2. Mobile Menu & Mega Menu Toggle
         const menuBtn = document.getElementById('menuBtn');
