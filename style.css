@@ -361,13 +361,21 @@ p { font-size: var(--p-size); line-height: 1.7; color: var(--text-muted); margin
 /* Reveal Animations */
 .reveal {
     opacity: 0;
-    transform: translateY(40px) scale(0.98);
-    transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+    transform: translateY(30px);
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
 }
 
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+.reveal.active,
+.hero .reveal,
+.hero.reveal,
+.hero-left,
+.hero-right,
+.hero-content,
+.hero-badge,
+.hero-split {
+    opacity: 1 !important;
+    transform: translateY(0) scale(1) !important;
 }
 
 /* =========================================
